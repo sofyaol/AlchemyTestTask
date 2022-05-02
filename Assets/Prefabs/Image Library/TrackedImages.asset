@@ -1,0 +1,67 @@
+%YAML 1.1
+%TAG !u! tag:unity3d.com,2011:
+--- !u!114 &11400000
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 0}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 848409ee8ba454f42a5ddff137688a27, type: 3}
+  m_Name: TrackedImages
+  m_EditorClassIdentifier: 
+  m_GuidLow: 4643371644437224312
+  m_GuidHigh: 1259737970130483614
+  m_Images:
+  - m_SerializedGuid:
+      m_GuidLow: 5393568807960304750
+      m_GuidHigh: 3317800483459424425
+    m_SerializedTextureGuid:
+      m_GuidLow: 15169301995728063106
+      m_GuidHigh: 8128319694313909866
+    m_Size: {x: 0.07, y: 0.06919757}
+    m_SpecifySize: 1
+    m_Name: Eye
+    m_Texture: {fileID: 2800000, guid: 71feca822fcbd2846a6e6440b297cd70, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5198398002877560004
+      m_GuidHigh: 6031999559935631807
+    m_SerializedTextureGuid:
+      m_GuidLow: 15196272020890116001
+      m_GuidHigh: 10128698305108132954
+    m_Size: {x: 0.07, y: 0.07}
+    m_SpecifySize: 1
+    m_Name: Mushroom
+    m_Texture: {fileID: 2800000, guid: c35cdfa100e3d2e45a4412c1715d908c, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5161393258721866729
+      m_GuidHigh: 9570600860366440320
+    m_SerializedTextureGuid:
+      m_GuidLow: 12449266128600037512
+      m_GuidHigh: 5767668277443874971
+    m_Size: {x: 0.07, y: 0.06768723}
+    m_SpecifySize: 1
+    m_Name: Rock
+    m_Texture: {fileID: 2800000, guid: bd81f888ad95acc49bd0546bbddf0a50, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 4814733785577208318
+      m_GuidHigh: 2465713293053902984
+    m_SerializedTextureGuid:
+      m_GuidLow: 12030483810608522310
+      m_GuidHigh: 15004748046855874987
+    m_Size: {x: 0.07, y: 0.067539066}
+    m_SpecifySize: 1
+    m_Name: HotCrystal
+    m_Texture: {fileID: 2800000, guid: 1768a446dd49a6f4aba9149dd9923bd0, type: 3}
+  - m_SerializedGuid:
+      m_GuidLow: 5693753273570563047
+      m_GuidHigh: 13465251464527003575
+    m_SerializedTextureGuid:
+      m_GuidLow: 118370016365620058
+      m_GuidHigh: 9688771730033007816
+    m_Size: {x: 0.07, y: 0.07}
+    m_SpecifySize: 1
+    m_Name: ColdCrystal
+    m_Texture: {fileID: 2800000, guid: 1987ab5a88e701a4c8dc761e8e6e7586, type: 3}

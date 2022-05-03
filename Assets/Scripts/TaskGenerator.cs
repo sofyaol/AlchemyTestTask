@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -9,18 +10,32 @@ public class TaskGenerator : MonoBehaviour
     [SerializeField] Text _taskLabel;
     private List<Recipe> _book;
     internal int CurrentRecipe { get; set; }
-    
+    public Action NewTask;
+
     private void Start()
     {
         CurrentRecipe = 0;
         _book = FindObjectOfType<RecipesBook>().Book;
         StartCoroutine(CreateTask());
+        FindObjectOfType<PotionMaker>().PotionIsMade += PotionIsMade;
     }
 
-    IEnumerator CreateTask()
+    private void OnDisable()
+    {
+        FindObjectOfType<PotionMaker>().PotionIsMade -= PotionIsMade;
+    }
+
+    private void PotionIsMade()
+    {
+        StopCoroutine(CreateTask());
+        StartCoroutine(CreateTask());
+    }
+
+    private IEnumerator CreateTask()
     {
         while (true)
         {
+            NewTask?.Invoke();
             string text = "";
             var recipe = _book[CurrentRecipe];
             var ingredientsCount = recipe.Ingredients.Count;

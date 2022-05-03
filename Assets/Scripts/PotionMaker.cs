@@ -1,3 +1,4 @@
+using System;
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
@@ -11,13 +12,23 @@ public class PotionMaker : MonoBehaviour
     private int _ingredientsCount;
     [SerializeField] private float maxCrossingDistance;
     private List<Recipe> _book;
+    private TaskGenerator _taskGenerator;
+    private int _lastIndex = 0;
+    public Action PotionIsMade;
+    
     void Start()
     {
         _book = FindObjectOfType<RecipesBook>().Book;
         _ingredients = FindObjectOfType<IngredientsHolder>().GetList();
         _ingredientsCount = _ingredients.Length;
-        
+        _taskGenerator = FindObjectOfType<TaskGenerator>();
+        _taskGenerator.NewTask += () => _lastIndex = 0;
         StartCoroutine(CheckForCrossingIngredient());
+    }
+
+    private void OnDisable()
+    {
+        _taskGenerator.NewTask -= () => _lastIndex = 0;
     }
 
     IEnumerator CheckForCrossingIngredient()
@@ -44,11 +55,20 @@ public class PotionMaker : MonoBehaviour
 
     private void TryCreatePotionBy(Ingredient target, Ingredient other)
     {
-        if (IsPotionEnabled(target, other))
+        if (IsCrossingEnable(target, other))
         {
-            if (IsRecipeRight(target, other))
+            if (IsCoupleRight(target, other))
             {
-                _infoLabel.text = "Recipe Right!";
+                _lastIndex++;
+                
+                if (_lastIndex == _book[_taskGenerator.CurrentRecipe].Ingredients.Count)
+                {
+                    _infoLabel.text = "Recipe is ready!";
+                    PotionIsMade?.Invoke();
+                    return;
+                }
+
+                _infoLabel.text = "Ingredients are Right!";
                 
             }
             else
@@ -65,12 +85,31 @@ public class PotionMaker : MonoBehaviour
         other.SetMaterial(_spoiled);
     }
 
-    private bool IsRecipeRight(Ingredient target, Ingredient other)
+    private bool IsCoupleRight(Ingredient target, Ingredient other)
     {
+
+        var currentRecipe = _taskGenerator.CurrentRecipe;
+        var recipe = _book[currentRecipe];
+        
+        if (target == recipe.Ingredients[_lastIndex])
+        {
+            return other == recipe.Ingredients[_lastIndex + 1] && 
+                   CheckTemperaturesOf(target, other, recipe, _lastIndex, _lastIndex + 1);
+        }
+
+        if (other == recipe.Ingredients[_lastIndex])
+        {
+            return target == recipe.Ingredients[_lastIndex + 1] &&
+                   CheckTemperaturesOf(target, other, recipe, _lastIndex + 1, _lastIndex);
+        }
+
+        return false;
+
         // 1. Находим рецепт с ингредиентом где есть target
         // 2. Проверяем, в этом рецепте второй ингредиент это other:
         // Если да - прорвеяем температуры, если подходят возвращаем true, иначе - false;
         // Если нет - continue.
+        /*
         for(int r = 0; r < _book.Count; r++)
         {
             var recipe = _book[r];
@@ -95,6 +134,7 @@ public class PotionMaker : MonoBehaviour
         }
         
         return false;
+        */
     }
 
     private bool CheckTemperaturesOf(Ingredient target, Ingredient other, Recipe recipe, int targetIndex, int otherIndex)
@@ -103,7 +143,7 @@ public class PotionMaker : MonoBehaviour
         return other.Temperature == recipe.Temperatures[otherIndex];
     }
 
-    private bool IsPotionEnabled(Ingredient target, Ingredient other)
+    private bool IsCrossingEnable(Ingredient target, Ingredient other)
     {
         if (!other.gameObject.activeSelf) return false;
         return CrossingDistance(target.transform, other.transform);

@@ -61,7 +61,7 @@ public class PotionMaker : MonoBehaviour
             {
                 _lastIndex++;
                 
-                if (_lastIndex == _book[_taskGenerator.CurrentRecipe].Ingredients.Count)
+                if (_lastIndex == _book[_taskGenerator.CurrentRecipe].Ingredients.Count - 1)
                 {
                     _infoLabel.text = "Recipe is ready!";
                     PotionIsMade?.Invoke();
@@ -93,7 +93,7 @@ public class PotionMaker : MonoBehaviour
         
         if (target == recipe.Ingredients[_lastIndex])
         {
-            return other == recipe.Ingredients[_lastIndex + 1] && 
+            return other == recipe.Ingredients[_lastIndex + 1] &&
                    CheckTemperaturesOf(target, other, recipe, _lastIndex, _lastIndex + 1);
         }
 
@@ -104,37 +104,6 @@ public class PotionMaker : MonoBehaviour
         }
 
         return false;
-
-        // 1. Находим рецепт с ингредиентом где есть target
-        // 2. Проверяем, в этом рецепте второй ингредиент это other:
-        // Если да - прорвеяем температуры, если подходят возвращаем true, иначе - false;
-        // Если нет - continue.
-        /*
-        for(int r = 0; r < _book.Count; r++)
-        {
-            var recipe = _book[r];
-            
-            for(int t = 0; t < recipe.Ingredients.Count; t++)
-            {
-                var ingredient = recipe.Ingredients[t];
-                    
-                if (target == ingredient)
-                {
-                    for(int o = 0; o < recipe.Ingredients.Count; o++)
-                    {
-                        var ingredient2 = recipe.Ingredients[o];
-                        
-                        if (other == ingredient2)
-                        {
-                            return CheckTemperaturesOf(target, other, recipe, t, o);
-                        }
-                    }
-                }
-            }
-        }
-        
-        return false;
-        */
     }
 
     private bool CheckTemperaturesOf(Ingredient target, Ingredient other, Recipe recipe, int targetIndex, int otherIndex)

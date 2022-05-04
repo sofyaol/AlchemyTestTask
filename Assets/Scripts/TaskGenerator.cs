@@ -9,12 +9,12 @@ public class TaskGenerator : MonoBehaviour
     [SerializeField] private float _timeForRecipe = 180f; // 3 minutes
     [SerializeField] Text _taskLabel;
     private List<Recipe> _book;
-    internal int CurrentRecipe { get; set; }
+    internal int CurrentRecipe { get; private set; }
     public Action NewTask;
 
     private void Start()
     {
-        CurrentRecipe = 0;
+        CurrentRecipe = -1;
         _book = FindObjectOfType<RecipesBook>().Book;
         StartCoroutine(CreateTask());
         FindObjectOfType<PotionMaker>().PotionIsMade += PotionIsMade;
@@ -35,6 +35,9 @@ public class TaskGenerator : MonoBehaviour
     {
         while (true)
         {
+            _taskLabel.text = "Get Ready!";
+            yield return new WaitForSeconds(3f);
+            SetNextIndex();
             NewTask?.Invoke();
             string text = "";
             var recipe = _book[CurrentRecipe];
@@ -55,7 +58,6 @@ public class TaskGenerator : MonoBehaviour
             }
 
             _taskLabel.text = text;
-            SetNextIndex();
             yield return new WaitForSeconds(_timeForRecipe);
         }
     }
